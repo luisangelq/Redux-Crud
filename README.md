@@ -1,4 +1,4 @@
-# Run Server
+# Run Local Server
 
 In terminal: json-server db.json --port 4000 
 
