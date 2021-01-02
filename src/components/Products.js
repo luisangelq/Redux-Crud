@@ -15,7 +15,8 @@ const Products = () => {
       dispatch(getProductsAction());
     };
     consultApi();
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //get state
   const products = useSelector((state) => state.products.products);

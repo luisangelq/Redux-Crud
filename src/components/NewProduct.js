@@ -3,6 +3,7 @@ import { useState } from "react";
 //Redux actions
 import { useDispatch, useSelector } from "react-redux"; //useDispatch nos ejecuta las acciones que tengamos y useSelector forma para acceder al state
 import { createNewActionProduct } from "../actions/productActions";
+import { showAlert, hideAlert } from "../actions/alertActions";
 
 import Spinner from "./Spinner";
 
@@ -15,6 +16,7 @@ const NewProduct = ({ history }) => {
   //access to state from store
   const loading = useSelector((state) => state.products.loading);
   const error = useSelector((state) => state.products.error);
+  const alert = useSelector(state => state.alert.alert)
 
   //call action from productActions
   const addProduct = (product) => {
@@ -27,8 +29,18 @@ const NewProduct = ({ history }) => {
 
     //validate
     if (name.trim() === "" || price <= 0) {
+      const alert = {
+        msg: "Both fields are required",
+        classes: "alert alert-danger text-center text-uppercase p3"
+      }
+      dispatch(showAlert(alert))
+
       return;
     }
+
+    //if there aren't errors
+    dispatch( hideAlert());
+
     //create
     addProduct({
       name,
@@ -38,7 +50,7 @@ const NewProduct = ({ history }) => {
     setTimeout(() => {
       history.push("/");
 
-    }, 3000);
+    }, 2000);
     
   };
 
@@ -50,6 +62,7 @@ const NewProduct = ({ history }) => {
             <h2 className="text-center mb-4 font-weight-bold">
               Add New Product
             </h2>
+            {alert ? <p className={alert.classes}>{alert.msg}</p> : null}
 
             <form onSubmit={submitNewProduct}>
               <div className="form-group">

@@ -1,44 +1,24 @@
 {
   "products": [
     {
-      "name": "tequila",
-      "price": 695,
+      "name": "Tequila",
+      "price": "350",
       "id": 1
     },
     {
       "name": "Umbral Apps",
-      "price": 10000,
+      "price": "100000",
       "id": 2
     },
     {
-      "name": "galletas",
-      "price": 15,
+      "name": "Testasc",
+      "price": "3211",
       "id": 3
     },
     {
-      "name": "tequila",
-      "price": 965,
+      "name": "1",
+      "price": 2,
       "id": 4
-    },
-    {
-      "name": "tequila",
-      "price": 985,
-      "id": 5
-    },
-    {
-      "name": "caca",
-      "price": 1,
-      "id": 6
-    },
-    {
-      "name": "vodka",
-      "price": 456,
-      "id": 7
-    },
-    {
-      "name": "tequila",
-      "price": 12,
-      "id": 8
     }
   ]
 }

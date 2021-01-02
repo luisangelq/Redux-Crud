@@ -6,6 +6,13 @@ import {
   START_PRODUCTS_DOWNLOAD,
   SUCCESS_PRODUCTS_DOWNLOAD,
   ERROR_PRODUCTS_DOWNLOAD,
+  GET_DELETE_PRODUCT,
+  SUCCESS_DELETE_PRODUCT,
+  ERROR_DELETE_PRODUCT,
+  GET_EDIT_PRODUCT,
+  START_EDIT_PRODUCT,
+  SUCCESS_EDIT_PRODUCT,
+  ERROR_EDIT_PRODUCT
 } from "../types";
 import Swal from "sweetalert2";
 import axiosClient from "../config/axios";
@@ -27,7 +34,7 @@ export function createNewActionProduct(product) {
           "The product has been added successfully",
           "success"
         );
-      }, 2000);
+      }, 1000);
     } catch (error) {
       setTimeout(() => {
         console.log(error);
@@ -38,7 +45,7 @@ export function createNewActionProduct(product) {
           title: "There Was An Error",
           text: "There Was An Error, Try Again",
         });
-      }, 2000);
+      }, 1000);
     }
   };
 }
@@ -67,7 +74,7 @@ export function getProductsAction() {
       const response = await axiosClient.get("/products");
       setTimeout(() => {
         dispatch(downloadProductsSuccess(response.data));
-      }, 1500);
+      }, 1000);
     } catch (error) {
       console.log(error);
       dispatch(downloadProductsError());
@@ -94,3 +101,101 @@ const downloadProductsError = () => ({
   type: ERROR_PRODUCTS_DOWNLOAD,
   payload: true,
 });
+
+
+//Select and delete product
+export function deleteProductAction (id) {
+  return async (dispatch) => {
+    dispatch(deleteProduct(id))
+
+    try {
+      await axiosClient.delete(`/products/${id}`)
+      dispatch(successDeleteProduct())
+
+      //if delete
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.',
+        'success'
+      )
+
+    } catch (error) {
+      console.log(error);
+      dispatch(errorDeleteProduct())
+      Swal.fire({
+        icon: "error",
+        title: "There Was An Error",
+        text: "There Was An Error, Try Again",
+      });
+    }
+    console.log(id);
+  }
+}
+
+const deleteProduct = (id) => ({
+  type: GET_DELETE_PRODUCT,
+  payload: id
+})
+
+const successDeleteProduct = () => ({
+  type: SUCCESS_DELETE_PRODUCT,
+  
+})
+
+const errorDeleteProduct = () => ({
+  type: ERROR_DELETE_PRODUCT,
+  payload: true
+})
+
+
+//Put product on edition 
+export function getEditProductAction(product) {
+  return (dispatch) => {
+    dispatch( getEditProduct(product))
+    
+  }
+}
+const getEditProduct = (product) => ({
+  type: GET_EDIT_PRODUCT,
+  payload: product
+})
+
+//Edit registry to API and state
+export function editProductAction(product) {
+  return async (dispatch) => {
+    dispatch( editProduct(product))
+
+    try {
+      await axiosClient.put(`/products/${product.id}`, product);
+        dispatch( editProductSuccess(product));
+
+        Swal.fire(
+          "Correct",
+          "The product has been edit successfully",
+          "success"
+        );
+
+    } catch (error) {
+      console.log(error);
+      dispatch(editProductError())
+      Swal.fire({
+        icon: "error",
+        title: "There Was An Error",
+        text: "There Was An Error, Try Again",
+      });
+    }
+  }
+}
+const editProduct = () => ({
+  type: START_EDIT_PRODUCT,
+})
+
+const editProductSuccess = (product) => ({
+  type: SUCCESS_EDIT_PRODUCT,
+  payload: product
+})
+
+const editProductError = () => ({
+  type: ERROR_EDIT_PRODUCT,
+  payload: true
+})
